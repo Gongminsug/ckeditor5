@@ -157,6 +157,7 @@ export default class ImageUploadEditing extends Plugin {
 
 				if ( loader ) {
 					writer.setAttribute( 'src', '', fetchableImage.imageElement );
+					writer.setAttribute( 'uid', '', fetchableImage.imageElement );
 					writer.setAttribute( 'uploadId', loader.id, fetchableImage.imageElement );
 				}
 			}
@@ -226,9 +227,12 @@ export default class ImageUploadEditing extends Plugin {
 		// Set the default handler for feeding the image element with `src` and `srcset` attributes.
 		this.on( 'uploadComplete', ( evt, { imageElement, data } ) => {
 			const urls = data.urls ? data.urls : data;
-
+			const uid = data.uid ? data.uid : "";
 			this.editor.model.change( writer => {
 				writer.setAttribute( 'src', urls.default, imageElement );
+				if(uid != ""){
+					writer.setAttribute( 'uid', uid, imageElement );
+				}
 				this._parseAndSetSrcsetAttributeOnImage( urls, imageElement, writer );
 			} );
 		}, { priority: 'low' } );
